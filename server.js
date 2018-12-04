@@ -89,7 +89,7 @@ app.use((request, response, next) => {
 });
 
 // Routes
-require("./routes/auth.js")(app);
+require("./routes/authRoutes.js")(app);
 require("./routes/apiRoutes")(app, process.env.OMBD_API_KEY);
 require("./routes/htmlRoutes")(app);
 

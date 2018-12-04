@@ -10,30 +10,17 @@ var bcrypt = require("bcryptjs");
 // var path = require("path");
 
 module.exports = function(app) {
-  // landing page
-  app.get("/", (request, response) => {
-    response.render("landing");
-  });
-
-  // app.get('/home', isLoggedIn, (request, response) => {
-  //     // db.User.findAll({}).then((result) => {
-  //     //     var progObject = {
-  //     //         usuarios: result
-  //     //     };
-  //     response.render('index', progObject);
-  // });
-
-  // });
-
+  // Login Route
   app.post(
     "/login",
     passport.authenticate("local-signIn", {
-      successRedirect: "/home",
+      successRedirect: "/",
       failureRedirect: "/",
       failureFlash: true
     })
   );
 
+  // User Logout Route
   app.get("/logout", isLoggedIn, (request, response, next) => {
     request.logout();
     request.flash("success_msg", "You are logged out");
@@ -42,51 +29,55 @@ module.exports = function(app) {
 
   // User Registration Route
   app.post("/users/register", (request, response) => {
+    // console.log(request.body);
     let name = request.body.name;
     let username = request.body.username;
     let email = request.body.email;
     let password = request.body.password;
-    // let password2 = request.body.password2;
-    // let program = request.body.workouts;
 
     request.checkBody("name", "Name is required").notEmpty();
     request.checkBody("email", "Email is required").notEmpty();
     request.checkBody("email", "Email is not valid").isEmail();
-    request.checkBody("username", "username is required").notEmpty();
+    request.checkBody("username", "Username is required").notEmpty();
     request.checkBody("password", "Password is required").notEmpty();
     request
       .checkBody("password2", "Passwords do not match")
       .equals(request.body.password);
 
-    let errors = request.validationErrors();
-    if (errors) {
-      // response.redirect('/', {
-      //     errors: errors
-      // // });
-      // response.redirect('/', {
-      //     errors: errors
-      // });
+    // (node:5387) DeprecationWarning: req.validationErrors() may be removed
+    // in a future version. Use req.getValidationResult() instead.
+    // let errors = request.validationErrors();
 
-      request.flash("error_msg", "Please fill out all the fields");
-      response.redirect("/");
-    } else {
-      let salt = bcrypt.genSaltSync(10);
-      let hashedPassword = bcrypt.hashSync(password, salt);
-      db.User.create({
-        name: name,
-        username: username,
-        password: hashedPassword,
-        salt: salt,
-        email: email
-        // ProgramId: program
-      }).then(user => {
-        passport.authenticate("local-signIn", {
-          failureRedirect: "/",
-          successRedirect: "/"
-        })(request, response);
-        request.flash("success_msg", "You are registered and can now login");
-      });
-    }
+    request.getValidationResult().then(function(result) {
+      if (!result.isEmpty()) {
+        // When Validation Fails result will contain the errors.
+        // result.array() will be the array containing the errors in
+        // the following format:
+        // {param: "name", msg: "Name is required", value: ""}
+        return response.status(422).json({ errors: result.array() });
+      } else {
+        console.log("Validation Passed");
+        // Encrypt the password with sat and hash.
+        let salt = bcrypt.genSaltSync(10);
+        let hashedPassword = bcrypt.hashSync(password, salt);
+        // Create The User if not already in the Database.
+        // Check Logic Required
+        db.User.create({
+          name: name,
+          username: username,
+          password: hashedPassword,
+          salt: salt,
+          email: email
+        }).then(userDB => {
+          console.log(userDB);
+          passport.authenticate("local-signIn", {
+            failureRedirect: "/",
+            successRedirect: "/"
+          })(request, response);
+        });
+      }
+      // return response.json({ message: "Registration Success" });
+    });
   });
 
   // ******************************************************************************
