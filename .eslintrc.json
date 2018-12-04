@@ -10,7 +10,6 @@
         "prettier"
       ],
     "rules": {
-        "arrow-parens":"error",
         "no-duplicate-case":"error",
         "no-empty":"error",
         "no-extra-semi":"error",
