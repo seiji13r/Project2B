@@ -1,0 +1,254 @@
+* {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+h1,
+h2,
+h3,
+h4,
+button,
+ul,
+li,
+p,
+form,
+input,
+a,
+textarea,
+span,
+div {
+    font-family: 'Ubuntu', sans-serif;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.content-body {
+    margin-bottom: 50px;
+}
+
+/* This css allows to maintain line breaks when pulling workouts from the db */
+p {
+    white-space: pre-wrap;
+}
+
+/*Site Header*/
+.site-header {
+    background-color: #000;
+    color: #fff;
+    height: 70px;
+    width: 100%;
+}
+
+.site-header li {
+    display: inline-block;
+}
+
+.header-button {
+    float: right;
+}
+
+.header-button button,
+.submit-button {
+    box-shadow: none;
+    border-style: none;
+    background-color: #fff;
+    margin: 20px 10px 0 0;
+    height: 30px;
+    font-size: 16px;
+    border-radius: 2px;
+}
+
+.header-button button:hover,
+.header-button button:focus,
+.submit-button:hover,
+.submit-button:focus {
+    background-color: #42C79A;
+    color: #fff;
+    outline: none;
+}
+
+.logo {
+    height: 60px;
+}
+
+/*Login and Register Modals*/
+.login-modal,
+.register-modal {
+    display: none;
+    position: fixed;
+    z-index: 20;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.login-modal-content,
+.register-modal-content,
+.workout-modal-content {
+    background-color: #000;
+    margin: 15% auto;
+    padding: 20px;
+    box-shadow: 1px 1px #2f4f4f;
+    width: 80%;
+    color: #fff;
+}
+
+.register-header,
+.login-header,
+.workout-header {
+    border-bottom: 2px solid #fff;
+    font-size: 28px;
+    padding-bottom: 10px;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    margin-right: 15px;
+}
+
+.close:hover,
+.close:focus {
+    color: #ff0000;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.register-modal-content div,
+.login-modal-content div,
+.workout-modal-content div {
+    margin-top: 10px;
+}
+
+.submit-button {
+    margin: 7px 0 0 0;
+    height: 25px;
+}
+
+.register-modal-content input,
+.login-modal-content input,
+.workout-modal-content input {
+    color: #888;
+    background-color: #000;
+    border-style: none;
+    border-bottom: 1px solid #000;
+    margin-left: 5px;
+    font-size: 18px;
+}
+
+.register-modal-content input:focus,
+.register-modal-content input:hover,
+.login-modal-content input:focus,
+.login-modal-content input:hover {
+    outline: none;
+    border-bottom: 1px solid #fff;
+}
+
+.workout-label {
+    font-size: 25px;
+    color: #42C79A;
+}
+
+.workout-text {
+    border-bottom: 1px solid #fff;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.workout-text p {
+    padding-left: 30px;
+}
+
+
+/*Admin header*/
+.hamburger {
+    float: left;
+    font-size: 30px;
+    margin: 20px 0 0 15px;
+}
+
+/*Admin menu*/
+.menu {
+    position: absolute;
+    background-color: #000;
+    display: none;
+    width: 25%;
+    height: 400px;
+    border-right: 2px solid #42C79A;
+    border-bottom: 2px solid #42C79A;
+    z-index: 1;
+}
+
+.menu li {
+    width: 100%;
+    padding: 25px;
+    text-align: center;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 25px;
+}
+
+.menu li:hover {
+    color: #000;
+    background-color: #fff;
+}
+
+
+/*Footer styles*/
+footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background-color: #000;
+    height: 50px;
+    text-align: center;
+    color: #fff;
+    margin-top: 15px;
+}
+
+footer p {
+    padding-top: 20px;
+}
+
+.error-block {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    /*background-color: #000;*/
+}
+
+.alert-success,
+.alert-danger {
+    margin-left: 30%;
+    width: 40%;
+    background-color: #00ff00;
+    font-size: 20px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    color: #fff;
+    padding-bottom: 5px;
+}
+
+.alert-danger {
+    background-color: #ff0000;
+}
