@@ -1,27 +1,55 @@
-module.exports = function(sequelize, DataTypes) {
+module.exports = function (sequelize, DataTypes) {
   var Movie = sequelize.define("Movie", {
     imdbID: {
       type: DataTypes.STRING,
       primaryKey: true
     },
-    Title: { type: DataTypes.STRING },
-    Year: { type: DataTypes.STRING },
-    Rated: { type: DataTypes.STRING },
-    Released: { type: DataTypes.STRING },
-    Runtime: { type: DataTypes.STRING },
-    Genre: { type: DataTypes.STRING },
-    Writer: { type: DataTypes.TEXT },
-    Actors: { type: DataTypes.TEXT },
-    Plot: { type: DataTypes.TEXT },
-    Language: { type: DataTypes.STRING },
-    Country: { type: DataTypes.STRING },
-    Awards: { type: DataTypes.STRING },
-    Poster: { type: DataTypes.STRING },
-    Genre: { type: DataTypes.STRING }
+    Title: {
+      type: DataTypes.STRING
+    },
+    Year: {
+      type: DataTypes.STRING
+    },
+    Rated: {
+      type: DataTypes.STRING
+    },
+    Released: {
+      type: DataTypes.STRING
+    },
+    Runtime: {
+      type: DataTypes.STRING
+    },
+    Genre: {
+      type: DataTypes.STRING
+    },
+    Writer: {
+      type: DataTypes.TEXT
+    },
+    Actors: {
+      type: DataTypes.TEXT
+    },
+    Plot: {
+      type: DataTypes.TEXT
+    },
+    Language: {
+      type: DataTypes.STRING
+    },
+    Country: {
+      type: DataTypes.STRING
+    },
+    Awards: {
+      type: DataTypes.STRING
+    },
+    Poster: {
+      type: DataTypes.STRING
+    },
+    Genre: {
+      type: DataTypes.STRING
+    }
   });
 
   // Below we declare the association with the Users through the intermediate UserMovie table
-  Movie.associate = function(models) {
+  Movie.associate = function (models) {
     Movie.belongsToMany(models.User, {
       through: models.UserMovie
     });
