@@ -2,9 +2,9 @@
 {{user.username}}
 <div>User Movie List to be Implemented</div>
 
-{{#each examples}}
-  <li data-id="{{this.id}}" class="list-group-item">
-    <a href="example/{{this.id}}">{{this.Title}}</a> <span>{{this.wannaWatch}}</span>
+{{#each movies}}
+  <li data-id="{{this.imdbID}}" class="list-group-item">
+    <a href="example/{{this.imdbID}}">{{this.Title}}</a> <span> Hello {{this.Users.0.UserMovie.wannaWatch}}</span>
     <button class="btn btn-danger float-right delete">ｘ</button>
   </li>
 {{/each}}
