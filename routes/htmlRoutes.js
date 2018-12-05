@@ -5,18 +5,30 @@ module.exports = function(app) {
   app.get("/", function(req, res) {
     if (req.user) {
       var userid = req.user.id;
+      // db.Movie.findAll({
+      //   include: [
+      //     {
+      //       model: db.User,
+      //       // attributes: ["MovieImdbID", "UserId"],
+      //       through: {
+      //         attributes: ["MovieImdbID", "UserId"],
+      //         where: { UserId: userid }
+      //       }
+      //     }
+      //   ]
       db.Movie.findAll({
         include: [
           {
             model: db.User,
-            // attributes: ["MovieImdbID", "UserId"],
+            where: { id: req.user.id },
             through: {
-              attributes: ["MovieImdbID", "UserId"],
-              where: { UserId: userid }
+              attributes: ["isSeenAlready", "wannaWatch"],
+              // where: { id: req.user.id }
             }
           }
         ]
       }).then(function(dbMovies) {
+        console.log(dbMovies);
         res.render("index", {
           msg: "Welcome!",
           examples: dbMovies
@@ -25,6 +37,16 @@ module.exports = function(app) {
     } else {
       res.render("index");
     }
+  });
+
+  // Test Query All
+  app.get("/api/movies", function(req, res) {
+    db.Movie.findAll({}).then(function(dbMovies) {
+      res.render("index", {
+        msg: "Welcome!",
+        examples: dbMovies
+      });
+    });
   });
 
   // Load moviesearch page
