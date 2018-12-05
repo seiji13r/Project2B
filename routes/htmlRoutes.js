@@ -17,12 +17,13 @@ module.exports = function(app) {
       //     }
       //   ]
       db.Movie.findAll({
+        // attributes: ["Title"],
         include: [
           {
             model: db.User,
             where: { id: req.user.id },
             through: {
-              attributes: ["isSeenAlready", "wannaWatch"],
+              attributes: ["isSeenAlready", "wannaWatch"]
               // where: { id: req.user.id }
             }
           }
@@ -31,8 +32,9 @@ module.exports = function(app) {
         console.log(dbMovies);
         res.render("index", {
           msg: "Welcome!",
-          examples: dbMovies
+          movies: dbMovies
         });
+        // res.json(dbMovies);
       });
     } else {
       res.render("index");

@@ -19,6 +19,7 @@ $(document).on("click", ".close", () => {
 $(document).on("click", ".submit-button__register", () => {
   event.preventDefault();
   var data = $("#register-form").serialize();
+  console.log(data);
   $.ajax({
     method: "POST",
     url: "/users/register",
