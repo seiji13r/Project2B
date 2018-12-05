@@ -66,7 +66,7 @@ p {
     /* height: 30px; */
     /* font-size: 16px; */
     /* border-radius: 2px; */
-} 
+}
 
 .header-button button:hover,
 .header-button button:focus,
@@ -251,4 +251,17 @@ footer p {
 
 .alert-danger {
     background-color: #ff0000;
+}
+
+.btn-danger {
+    margin: 5px;
+}
+
+.btn-primary {
+    margin: 5px;
+
+}
+
+.details {
+    color: white;
 }

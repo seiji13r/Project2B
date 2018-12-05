@@ -23,7 +23,9 @@ var PORT = process.env.PORT || 3000;
 
 // Middleware Set Up
 // Sets up the Express app to handle data parsing
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({
+  extended: false
+}));
 app.use(express.json());
 
 // bodyParser Removed because is Deprecated since express 4.0
@@ -50,7 +52,9 @@ app.use(methodOverride("_method"));
 
 // Handlebars Setup
 // https://handlebarsjs.com/
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.engine("handlebars", exphbs({
+  defaultLayout: "main"
+}));
 app.set("view engine", "handlebars");
 
 // Cookie Parser Middleware
@@ -95,14 +99,16 @@ require("./routes/htmlRoutes")(app);
 
 // If running a test, set syncOptions.force to true
 // clearing the `testdb`
-var syncOptions = { force: false };
+var syncOptions = {
+  force: false
+};
 if (process.env.NODE_ENV === "test") {
   syncOptions.force = true;
 }
 
 // Starting the server, syncing our models ------------------------------------/
-db.sequelize.sync(syncOptions).then(function() {
-  app.listen(PORT, function() {
+db.sequelize.sync(syncOptions).then(function () {
+  app.listen(PORT, function () {
     console.log(
       "==> 🌎  Listening on port %s. Visit http://localhost:%s/ in your browser.",
       PORT,

@@ -1,8 +1,8 @@
 var db = require("../models");
 
-module.exports = function(app) {
+module.exports = function (app) {
   // Load index page
-  app.get("/", function(req, res) {
+  app.get("/", function (req, res) {
     if (req.user) {
       var userid = req.user.id;
       // db.Movie.findAll({
@@ -18,17 +18,17 @@ module.exports = function(app) {
       //   ]
       db.Movie.findAll({
         // attributes: ["Title"],
-        include: [
-          {
-            model: db.User,
-            where: { id: req.user.id },
-            through: {
-              attributes: ["isSeenAlready", "wannaWatch"]
-              // where: { id: req.user.id }
-            }
+        include: [{
+          model: db.User,
+          where: {
+            id: req.user.id
+          },
+          through: {
+            attributes: ["isSeenAlready", "wannaWatch"]
+            // where: { id: req.user.id }
           }
-        ]
-      }).then(function(dbMovies) {
+        }]
+      }).then(function (dbMovies) {
         console.log(dbMovies);
         res.render("index", {
           msg: "Welcome!",
@@ -42,8 +42,8 @@ module.exports = function(app) {
   });
 
   // Test Query All
-  app.get("/api/movies", function(req, res) {
-    db.Movie.findAll({}).then(function(dbMovies) {
+  app.get("/api/movies", function (req, res) {
+    db.Movie.findAll({}).then(function (dbMovies) {
       res.render("index", {
         msg: "Welcome!",
         examples: dbMovies
@@ -52,14 +52,20 @@ module.exports = function(app) {
   });
 
   // Load moviesearch page
-  app.get("/moviesearch/", function(req, res) {
+  app.get("/moviesearch/", function (req, res) {
     res.render("moviesearch", {
       msg: "Search Movie"
     });
   });
 
+  // app.get("/allmmovies", function (req, res) {
+  //   db.Movie.findAll({}).then(function (dbMovies) {
+  //     res.json(dbMovies);
+  //   });
+  // });
+
   // Render 404 page for any unmatched routes
-  app.get("*", function(req, res) {
+  app.get("*", function (req, res) {
     res.render("404");
   });
 };
