@@ -32,10 +32,20 @@ $(document).on("click", ".submit-button__register", () => {
       // Clear the Inputs, hide the Modal and Diplay Success Message
       $(".register-modal").find("input").val("");
       $(".register-modal").hide();
-      $(".error-block").html(
-        "<div class='alert alert-success'>You Are Now Registered</div>"
-      );
-      // Wait 2 Seconds before redirecting
+      
+      // $(".error-block").html(
+      //   "<div class='alert alert-success'>You Are Now Registered</div>"
+      // );
+      if (response != null) {
+        $(".error-block").html(
+          "<div class='alert alert-success'>You Are Now Registered</div>"
+        );
+      } else {
+        $(".error-block").html(
+          "<div class='alert alert-danger'>The user already exists, try another one</div>"
+        );
+      }
+       // Wait 2 Seconds before redirecting
       setTimeout(function() {
         window.location.reload();
       }, 3 * 1000);
