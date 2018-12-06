@@ -9,7 +9,7 @@ var db = require("../models");
 var bcrypt = require("bcryptjs");
 // var path = require("path");
 
-module.exports = function(app) {
+module.exports = function (app) {
   // Login Route
   app.post(
     "/login",
@@ -48,13 +48,15 @@ module.exports = function(app) {
     // in a future version. Use req.getValidationResult() instead.
     // let errors = request.validationErrors();
 
-    request.getValidationResult().then(function(result) {
+    request.getValidationResult().then(function (result) {
       if (!result.isEmpty()) {
         // When Validation Fails result will contain the errors.
         // result.array() will be the array containing the errors in
         // the following format:
         // {param: "name", msg: "Name is required", value: ""}
-        return response.status(422).json({ errors: result.array() });
+        return response.status(422).json({
+          errors: result.array()
+        });
       } else {
         console.log("Validation Passed");
         // Encrypt the password with sat and hash.
@@ -62,19 +64,36 @@ module.exports = function(app) {
         let hashedPassword = bcrypt.hashSync(password, salt);
         // Create The User if not already in the Database.
         // Check Logic Required
-        db.User.create({
-          name: name,
-          username: username,
-          password: hashedPassword,
-          salt: salt,
-          email: email
-        }).then(userDB => {
-          console.log(userDB);
-          passport.authenticate("local-signIn", {
-            failureRedirect: "/",
-            successRedirect: "/"
-          })(request, response);
-        });
+
+        console.log("aqui el username" + username);
+        db.User.findOne({
+            where: {
+              username: username
+            }
+          })
+          .then(function (resultado) {
+            if (null != resultado) {
+              console.log("USERNAME ALREADY EXISTS:", resultado.username);
+              // response.redirect("/");
+              response.json(null);
+
+            } else {
+
+              db.User.create({
+                name: name,
+                username: username,
+                password: hashedPassword,
+                salt: salt,
+                email: email
+              }).then(userDB => {
+                console.log(userDB);
+                passport.authenticate("local-signIn", {
+                  failureRedirect: "/",
+                  successRedirect: "/"
+                })(request, response);
+              });
+            }
+          });
       }
       // return response.json({ message: "Registration Success" });
     });
@@ -133,10 +152,10 @@ module.exports = function(app) {
   //   Deserialize Sessions
   passport.deserializeUser((user, done) => {
     db.User.findOne({
-      where: {
-        username: user.username
-      }
-    })
+        where: {
+          username: user.username
+        }
+      })
       .then(user => {
         done(null, user);
       })
