@@ -63,7 +63,7 @@ module.exports = function(app) {
         }
       ]
     }).then(function(dbMovies) {
-      dbMovies2 = dbMovies.filter(function(elem){
+      dbMovies2 = dbMovies.filter(function(elem) {
         return elem.Users.length > 1;
       });
       res.render("moviematch", {
@@ -71,12 +71,6 @@ module.exports = function(app) {
         movies: dbMovies2
       });
       // res.json(dbMovies2);
-    });
-  });
-
-  app.get("/api/movies", function(req, res) {
-    db.Movie.findAll({}).then(function(dbMovies) {
-      res.json(dbMovies);
     });
   });
 

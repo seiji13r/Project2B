@@ -1,13 +1,7 @@
-// var alert = require('alert');
-
-// import alert from 'alert-node';
-// var swal = require('swal');
-
 var passport = require("passport");
 var LocalStrategy = require("passport-local").Strategy;
 var db = require("../models");
 var bcrypt = require("bcryptjs");
-// var path = require("path");
 
 module.exports = function(app) {
   // Login Route

@@ -20,6 +20,13 @@ module.exports = function(app, ombdKey) {
     });
   });
 
+  // Return All Movies
+  app.post("/api/movies", function(req, res) {
+    db.Movie.findAll({}).then(function(dbMovies) {
+      res.json(dbMovies);
+    });
+  });
+
   // Movie Seen
   app.post("/api/movieadd", function(req, res) {
     addMovie(req, res, ombdKey);
