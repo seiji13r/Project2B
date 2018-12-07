@@ -1,6 +1,6 @@
  {{#each movies}}
 
-<div class="result-table">
+<div class="movie-result movie-div-{{this.imdbID}}">
 {{this.Title}}
 <table class="table">
   <tr>
@@ -40,7 +40,7 @@
     <td>
       <button data-imdbid="{{this.imdbID}}" class="btn btn-success add-wanna-watch">Wanna Watch</button>
       <button data-imdbid="{{this.imdbID}}" class="btn btn-info add-already-seen">Seen Already</button>
-      <button data-imdbid="{{this.imdbID}}" class="btn btn-danger float-right delete">ｘ</button>
+      <button data-imdbid="{{this.imdbID}}" class="btn btn-danger remove-movie">ｘ</button>
     </td>
   </tr>
 </table>

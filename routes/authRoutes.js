@@ -21,7 +21,7 @@ module.exports = function(app) {
   );
 
   // User Logout Route
-  app.get("/logout", isLoggedIn, (request, response, next) => {
+  app.get("/logout", isLoggedIn, (request, response) => {
     request.logout();
     request.flash("success_msg", "You are logged out");
     response.redirect("/");
@@ -48,7 +48,7 @@ module.exports = function(app) {
     // in a future version. Use req.getValidationResult() instead.
     // let errors = request.validationErrors();
 
-    request.getValidationResult().then(function (result) {
+    request.getValidationResult().then(function(result) {
       if (!result.isEmpty()) {
         // When Validation Fails result will contain the errors.
         // result.array() will be the array containing the errors in
@@ -147,12 +147,13 @@ module.exports = function(app) {
   }
 
   // function that allowes rout access only to logged in users ///
-  function notLoggedIn(request, response, next) {
-    if (!request.isAuthenticated()) {
-      return next();
-    }
-    response.redirect("/");
-  }
+  // function notLoggedIn(request, response, next) {
+  //   if (!request.isAuthenticated()) {
+  //     return next();
+  //   }
+  //   response.redirect("/");
+  // }
+
   // Serialize Sessions
   passport.serializeUser((user, done) => {
     done(null, user);
@@ -161,10 +162,10 @@ module.exports = function(app) {
   //   Deserialize Sessions
   passport.deserializeUser((user, done) => {
     db.User.findOne({
-        where: {
-          username: user.username
-        }
-      })
+      where: {
+        username: user.username
+      }
+    })
       .then(user => {
         done(null, user);
       })

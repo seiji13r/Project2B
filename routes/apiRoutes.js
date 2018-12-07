@@ -21,30 +21,36 @@ module.exports = function(app, ombdKey) {
   });
 
   // Movie Seen
-  app.post("/api/movieseen", function(req, res) {
-    processMovie(req, res, ombdKey, "seen");
+  app.post("/api/movieadd", function(req, res) {
+    addMovie(req, res, ombdKey);
+  });
+
+  // Movie Seen
+  app.put("/api/movieseen", function(req, res) {
+    updateMovie(req, res, "seen");
   });
 
   // Movie Want To Watch
-  app.post("/api/movietowatch", function(req, res) {
-    processMovie(req, res, ombdKey, "towatch");
+  app.put("/api/movietowatch", function(req, res) {
+    updateMovie(req, res, "towatch");
+  });
+
+  // Remove Movie From My Movies
+  app.delete("/api/movieremove", function(req, res) {
+    removeMovie(req, res);
   });
 };
 
-function processMovie(req, res, ombdKey, opt) {
+function addMovie(req, res, ombdKey) {
   var movieImdbID = req.body.imdbID;
-  var user = req.body.user;
-  // console.log(req.body);
-
-  // var trailer = videopreview(movieImdbID);
-  // console.log("****************" + trailer);
 
   var entryUrl =
     "https://www.omdbapi.com/?i=" + movieImdbID + "&apikey=" + ombdKey;
   // console.log(entryUrl);
-  request(entryUrl, function (error, response, body) {
+  request(entryUrl, function(error, response, body) {
     if (error === null) {
       var movie = JSON.parse(body);
+      // console.log(movie);
       db.Movie.findOrCreate({
         where: {
           imdbID: movie.imdbID
@@ -66,26 +72,68 @@ function processMovie(req, res, ombdKey, opt) {
           Genre: movie.Genre
           // Preview: trailer
         }
-      }).spread(function(dbMovie, created) {
-        if (opt === "seen") {
-          req.user.addMovie(dbMovie, {
-            through: {
-              isSeenAlready: true
-            }
-          });
-        } else if (opt === "towatch") {
-          req.user.addMovie(dbMovie, {
-            through: {
-              wannaWatch: true
-            }
-          });
-        }
+      }).spread(function(dbMovie) {
+        // }).spread(function(dbMovie, created) {
+        console.log("Add Action");
+        req.user.addMovie(dbMovie, {
+          through: {
+            isSeenAlready: false,
+            wannaWatch: false
+          }
+        });
+        // Send The Response With Movie Data
         res.json(dbMovie);
       });
     } else {
       res.json(error);
     }
   });
+}
+
+function updateMovie(req, res, opt) {
+  var movieImdbID = req.body.imdbID;
+  db.Movie.findOne({
+    where: {
+      imdbID: movieImdbID
+    }
+  })
+    .then(function(dbMovie) {
+      if (opt === "seen") {
+        console.log("Seen", req.body.seen);
+        req.user.addMovie(dbMovie, {
+          through: {
+            isSeenAlready: req.body.seen
+          }
+        });
+      } else if (opt === "towatch") {
+        console.log("ToWatch", req.body.towatch);
+        req.user.addMovie(dbMovie, {
+          through: {
+            wannaWatch: req.body.towatch
+          }
+        });
+      }
+      res.json(dbMovie);
+    })
+    .catch(function(error) {
+      res.json(error);
+    });
+}
+
+function removeMovie(req, res) {
+  var movieImdbID = req.body.imdbID;
+  db.Movie.findOne({
+    where: {
+      imdbID: movieImdbID
+    }
+  })
+    .then(function(dbMovie) {
+      req.user.removeMovie(dbMovie);
+      res.json(dbMovie);
+    })
+    .catch(function(error) {
+      res.json(error);
+    });
 }
 
 // imdbID: movie.imdbID,
