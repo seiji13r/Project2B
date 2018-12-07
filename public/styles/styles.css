@@ -6,4 +6,8 @@ main {
   line-height: 2.5;
 }
 
-
+.result-table{
+  color: white;
+  background-color: black;
+  opacity: 0.75;
+}

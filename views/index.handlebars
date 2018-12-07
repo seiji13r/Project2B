@@ -1,6 +1,53 @@
  {{#each movies}}
+
+<div class="result-table">
+{{this.Title}}
+<table class="table">
+  <tr>
+    <th>
+      Wanna Watch
+    </th>
+    <th>
+      Seen Already
+    </th>
+    <th>
+      Details
+    </th>
+    <th>
+      Actions
+    </th>
+  </tr>
+  <tr>
+    <td>
+      {{#if this.Users.0.UserMovie.wannaWatch}}
+        <span id="{{this.imdbID}}_wannawatch">Yes</span>
+      {{else}}
+        <span id="{{this.imdbID}}_wannawatch">No</span>
+      {{/if}}
+    </td>
+    <td>
+      {{#if this.Users.0.UserMovie.isSeenAlready}}
+        <span id="{{this.imdbID}}_seen">Yes</span>
+      {{else}}
+        <span id="{{this.imdbID}}_seen">No</span>
+      {{/if}}
+    </td>
+    <td>
+      <button class="btn btn-primary">
+        <a onClick="modalDisplay({{@index}})" href="#" class="overlay link details" id="trigger-modal{{@index}}">Details</a>
+      </button>
+    </td>
+    <td>
+      <button data-imdbid="{{this.imdbID}}" class="btn btn-success add-wanna-watch">Wanna Watch</button>
+      <button data-imdbid="{{this.imdbID}}" class="btn btn-info add-already-seen">Seen Already</button>
+      <button data-imdbid="{{this.imdbID}}" class="btn btn-danger float-right delete">ｘ</button>
+    </td>
+  </tr>
+</table>
+</div>
+
+{{!-- 
 <li data-id="{{this.imdbID}}" class="list-group-item">
-  {{!-- {{this.imdbID}} --}}
   <span class="text-primary">{{this.Title}}</span>
   {{#if this.Users.0.UserMovie.wannaWatch}}
   <span>Wanna Watch</span>
@@ -10,13 +57,12 @@
   <span>Seen Already</span>
   {{else}}
   <button class="btn btn-info seenalready">Seen Already</button>
-  {{/if}} {{!--
-  <a onClick="modalDisplay({{@index}})" href="#" class="overlay link" id="trigger-modal{{@index}}">click</a> --}}
+  {{/if}}
   <button class="btn btn-primary float-right">
     <a onClick="modalDisplay({{@index}})" href="#" class="overlay link details" id="trigger-modal{{@index}}">Details</a>
   </button>
   <button class="btn btn-danger float-right delete">ｘ</button>
-</li>
+</li> --}}
 
 <div id="myModal{{@index}}" class="modal modaltest">
 

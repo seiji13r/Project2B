@@ -106,8 +106,22 @@ var handleMovieToWatch = function(){
   // console.log("MovieToWatch");
   // console.log($(this));
   // console.log($(this).data("imdbid"));
-  
   event.preventDefault();
+
+  // var imdbID= $(this).data("imdbid");
+  // // console.log(imdbID);
+  // // console.log($("#"+imdbID+"_wannawatch").text());
+  // var spanTag = $("#"+imdbID+"_wannawatch");
+  // var spanData = $("#"+imdbID+"_wannawatch").text();
+  // var wannaWatch;
+
+  // if (spanData === "No"){
+  //   spanTag.text("Yes");
+  //   wannaWatch = true;
+  // } else {
+  //   spanTag.text("No");
+  //   wannaWatch = false;
+  // }
 
   var movieuser = {
     imdbID: $(this).data("imdbid"),
