@@ -1,9 +1,9 @@
 var db = require("../models");
 var request = require("request");
 
-module.exports = function (app, ombdKey) {
+module.exports = function(app, ombdKey) {
   // Search Movies
-  app.post("/api/moviesearch", function (req, res) {
+  app.post("/api/moviesearch", function(req, res) {
     var movie = req.body;
     var entryUrl =
       "https://www.omdbapi.com/?s=" +
@@ -11,7 +11,7 @@ module.exports = function (app, ombdKey) {
       "&type=movie&apikey=" +
       ombdKey;
 
-    request(entryUrl, function (error, response, body) {
+    request(entryUrl, function(error, response, body) {
       if (error === null) {
         res.send(JSON.parse(body));
       } else {
@@ -21,12 +21,12 @@ module.exports = function (app, ombdKey) {
   });
 
   // Movie Seen
-  app.post("/api/movieseen", function (req, res) {
+  app.post("/api/movieseen", function(req, res) {
     processMovie(req, res, ombdKey, "seen");
   });
 
   // Movie Want To Watch
-  app.post("/api/movietowatch", function (req, res) {
+  app.post("/api/movietowatch", function(req, res) {
     processMovie(req, res, ombdKey, "towatch");
   });
 };
@@ -66,7 +66,7 @@ function processMovie(req, res, ombdKey, opt) {
           Genre: movie.Genre
           // Preview: trailer
         }
-      }).spread(function (dbMovie, created) {
+      }).spread(function(dbMovie, created) {
         if (opt === "seen") {
           req.user.addMovie(dbMovie, {
             through: {

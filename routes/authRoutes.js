@@ -9,7 +9,7 @@ var db = require("../models");
 var bcrypt = require("bcryptjs");
 // var path = require("path");
 
-module.exports = function (app) {
+module.exports = function(app) {
   // Login Route
   app.post(
     "/login",
@@ -67,33 +67,42 @@ module.exports = function (app) {
 
         console.log("aqui el username" + username);
         db.User.findOne({
-            where: {
-              username: username
-            }
-          })
-          .then(function (resultado) {
-            if (null != resultado) {
-              console.log("USERNAME ALREADY EXISTS:", resultado.username);
-              // response.redirect("/");
-              response.json(null);
-
-            } else {
-
-              db.User.create({
-                name: name,
-                username: username,
-                password: hashedPassword,
-                salt: salt,
+          where: {
+            username: username
+          }
+        }).then(function(resultado) {
+          if (null !== resultado) {
+            console.log("USERNAME ALREADY EXISTS:", resultado.username);
+            // response.redirect("/");
+            response.json(null);
+          } else {
+            db.User.findOne({
+              where: {
                 email: email
-              }).then(userDB => {
-                console.log(userDB);
-                passport.authenticate("local-signIn", {
-                  failureRedirect: "/",
-                  successRedirect: "/"
-                })(request, response);
-              });
-            }
-          });
+              }
+            }).then(function(resultado) {
+              if (null !== resultado) {
+                console.log("EMAIL ALREADY EXISTS:", resultado.email);
+                // response.redirect("/");
+                response.json(null);
+              } else {
+                db.User.create({
+                  name: name,
+                  username: username,
+                  password: hashedPassword,
+                  salt: salt,
+                  email: email
+                }).then(userDB => {
+                  console.log(userDB);
+                  passport.authenticate("local-signIn", {
+                    failureRedirect: "/",
+                    successRedirect: "/"
+                  })(request, response);
+                });
+              }
+            });
+          }
+        });
       }
       // return response.json({ message: "Registration Success" });
     });
