@@ -30,6 +30,8 @@ html,
 body {
     margin: 0;
     padding: 0;
+    background-image: url("../images/film.jpg");
+    background-size: 100% 100%;
 }
 
 .content-body {
@@ -264,4 +266,16 @@ footer p {
 
 .details {
     color: white;
+}
+
+#detail{
+ font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+ background-color: aquamarine;
+ font-weight: bold
+}
+#navtitle{
+    color:aquamarine;
+}
+#maintext{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif !important;
 }

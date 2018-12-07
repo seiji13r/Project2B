@@ -18,17 +18,16 @@
   <link rel="stylesheet" href="/styles/main-style.css" media="screen" title="no title" charset="utf-8">
 
 
-  <title>I Already See That Movie App!!</title>
+  <title>I Already Saw That Movie App!!</title>
 </head>
 
 <body>
 
   <!-- Starts Menu NavBar-->
   <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-    <a href="#" class="navbar-brand">
-      <i class="fas fa-film"></i>
-      <i class="fas fa-video"></i>
-      IASTM
+    <a href="#" class="navbar-brand" id="navtitle">
+<img id="logo" src="../images/logo.jpg" alt="logo" height = 50> 
+     MOVIE LIST 
     </a>
     <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarMenu">
       <span class="navbar-toggler-icon"></span>
@@ -78,11 +77,21 @@
   {{#if user}}
   {{{body}}}
   {{else}}
-  <main class="container">
-    <div class="jumbotron">
-      <h1 class="text-center">I Already See That Movie App!!</h1>
+<main class="container">
+    <div class="jumbotron container-fluid" id="jumbo">
+        <div class="row">
+            <div class="col-md-9" id="maintext">
+                <h1 class="text-center"> I Already Saw That Movie!!</h1>
+            </div>
+            <div class="col-md-2"> <img class="img-responsive" id="logoimg" src="../images/logo.jpg" alt="logo" height=200>
+            </div>
+        </div>
     </div>
   </main> 
+  <div class="container" id="detail">
+ <h2 class="text-center">Your Personal Movie List</h2> 
+ <p class="text-center">With MOVIE LIST you can keep track of the movies you saw and the movies you want to watch in a simple way.</p>
+ </div>
   {{/if}}
 
 <!--Login Modal-->
