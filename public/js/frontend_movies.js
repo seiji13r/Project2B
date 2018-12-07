@@ -75,7 +75,10 @@ var handleMovieSearchSubmit = function() {
       response.Search.forEach(function(movie) {
         // console.log(movie);
         var imgMovieDiv = $("<div>");
-        imgMovieDiv.addClass("movie-div-" + movie.imdbID);
+        imgMovieDiv.addClass(
+          "col-sm-12 col-md-3 movie-poster-div movie-div-" + movie.imdbID
+        );
+
         var movieIMG = $("<img>");
         movieIMG.addClass("img-movie-poster");
         movieIMG.attr("src", movie.Poster);
@@ -86,10 +89,20 @@ var handleMovieSearchSubmit = function() {
         addMovieBtn.addClass("btn btn-warning add-movie");
         addMovieBtn.attr("data-imdbid", movie.imdbID);
 
-        movieIMG.appendTo(imgMovieDiv);
+        var movieTitle = $("<h6>");
+        movieTitle.text(movie.Title);
+
         addMovieBtn.appendTo(imgMovieDiv);
+        movieIMG.appendTo(imgMovieDiv);
+        movieTitle.appendTo(imgMovieDiv);
 
         imgMovieDiv.appendTo($movieSearchContainer);
+
+      //   <div class="col-sm-12 col-md-3 movie-poster-div">
+      //   <button class="btn btn-warning">Add Movie</button>
+      //   <h6 class="movie-title">Star Wars</h6>
+      //   <img src="https://m.media-amazon.com/images/M/MV5BNzVlY2MwMjktM2E4OS00Y2Y3LWE3ZjctYzhkZGM3YzA1ZWM2XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg" alt="">
+      // </div>
       });
     }
   });
@@ -196,3 +209,8 @@ $(document).on("click", ".add-movie", handleMovieAdd);
 $(document).on("click", ".remove-movie", handleMovieRemove);
 $(document).on("click", ".add-already-seen", handleMovieSeen);
 $(document).on("click", ".add-wanna-watch", handleMovieToWatch);
+$(document).ready(function(){
+  $(".navbar-brand, .navbar-nav>li>a").on("click", function() {
+    $(".navbar-collapse").collapse("hide");
+  });
+});

@@ -1,4 +1,4 @@
-module.exports = function (sequelize, DataTypes) {
+module.exports = function(sequelize, DataTypes) {
   var Movie = sequelize.define("Movie", {
     imdbID: {
       type: DataTypes.STRING,
@@ -49,7 +49,7 @@ module.exports = function (sequelize, DataTypes) {
   });
 
   // Below we declare the association with the Users through the intermediate UserMovie table
-  Movie.associate = function (models) {
+  Movie.associate = function(models) {
     Movie.belongsToMany(models.User, {
       through: models.UserMovie
     });

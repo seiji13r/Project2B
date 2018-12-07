@@ -1,0 +1,25 @@
+
+  <div class="container movie-result">
+
+    <div class="row">
+      <div class="col-12">
+        <h1 class="section-title text-center">{{msg}}</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        {{#each movies}}
+          <h4 class="movie-title">{{this.Title}} [{{this.Year}}] </h4>
+          <ul>
+          {{#each this.Users}}
+          <li>
+            {{username}} : {{email}} 
+          </li>
+          {{/each}}
+          </ul>
+        {{/each}}
+      </div>
+    </div>
+
+  </div>

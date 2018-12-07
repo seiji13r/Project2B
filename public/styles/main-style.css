@@ -30,8 +30,18 @@ html,
 body {
     margin: 0;
     padding: 0;
+}
+
+.main{
+    padding-top: 40px;
+    min-height: calc(100vh - 40px); 
+    /* height: calc(100vh - 40px); */
     background-image: url("../images/film.jpg");
-    background-size: 100% 100%;
+    background-size: auto calc(100vh - 40px);
+    /* background-size: cover; */
+    /* background-position: center; */
+    background-repeat: repeat;
+    background-position: center center;
 }
 
 .content-body {
@@ -102,6 +112,7 @@ p {
 .workout-modal-content {
     background-color: #000;
     margin: 15% auto;
+    margin-top: 160px;
     padding: 20px;
     box-shadow: 1px 1px #2f4f4f;
     width: 80%;

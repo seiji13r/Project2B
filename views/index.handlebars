@@ -1,99 +1,107 @@
  {{#each movies}}
 
-<div class="movie-result movie-div-{{this.imdbID}}">
-{{this.Title}}
-<table class="table">
-  <tr>
-    <th>
-      Wanna Watch
-    </th>
-    <th>
-      Seen Already
-    </th>
-    <th>
-      Details
-    </th>
-    <th>
-      Actions
-    </th>
-  </tr>
-  <tr>
-    <td>
-      {{#if this.Users.0.UserMovie.wannaWatch}}
-        <span id="{{this.imdbID}}_wannawatch">Yes</span>
-      {{else}}
-        <span id="{{this.imdbID}}_wannawatch">No</span>
-      {{/if}}
-    </td>
-    <td>
-      {{#if this.Users.0.UserMovie.isSeenAlready}}
-        <span id="{{this.imdbID}}_seen">Yes</span>
-      {{else}}
-        <span id="{{this.imdbID}}_seen">No</span>
-      {{/if}}
-    </td>
-    <td>
-      <button class="btn btn-primary">
-        <a onClick="modalDisplay({{@index}})" href="#" class="overlay link details" id="trigger-modal{{@index}}">Details</a>
-      </button>
-    </td>
-    <td>
-      <button data-imdbid="{{this.imdbID}}" class="btn btn-success add-wanna-watch">Wanna Watch</button>
-      <button data-imdbid="{{this.imdbID}}" class="btn btn-info add-already-seen">Seen Already</button>
-      <button data-imdbid="{{this.imdbID}}" class="btn btn-danger remove-movie">ｘ</button>
-    </td>
-  </tr>
-</table>
+<div class="container movie-result movie-div-{{this.imdbID}}">
+<h1 class="movie-title">{{this.Title}}</h1>
+<div class="row">
+  <div class="col-2">
+    <div class="mini-poster text-center">
+      <img src="{{this.Poster}}" alt="{{this.Title}}">
+    </div>
+  </div>
+  <div class="col-sm-10 col-md-10">
+    <table class="table table-responsive">
+      <tr>
+        <th>
+          Wanna Watch
+        </th>
+        <th>
+          Seen Already
+        </th>
+        <th>
+          Details
+        </th>
+        <th>
+          Actions
+        </th>
+      </tr>
+      <tr>
+        <td>
+          {{#if this.Users.0.UserMovie.wannaWatch}}
+            <span id="{{this.imdbID}}_wannawatch">Yes</span>
+          {{else}}
+            <span id="{{this.imdbID}}_wannawatch">No</span>
+          {{/if}}
+        </td>
+        <td>
+          {{#if this.Users.0.UserMovie.isSeenAlready}}
+            <span id="{{this.imdbID}}_seen">Yes</span>
+          {{else}}
+            <span id="{{this.imdbID}}_seen">No</span>
+          {{/if}}
+        </td>
+        <td>
+          {{!-- <button class="btn btn-primary">
+            <a onClick="modalDisplay({{@index}})" href="#" class="overlay link details" id="trigger-modal{{@index}}">Details</a>
+          </button> --}}
+          <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#myModal{{@index}}">
+            Details
+          </button>
+        </td>
+        <td>
+          <button data-imdbid="{{this.imdbID}}" class="btn btn-sm btn-success add-wanna-watch">Wanna Watch</button>
+          <button data-imdbid="{{this.imdbID}}" class="btn btn-sm btn-info add-already-seen">Seen Already</button>
+          <button data-imdbid="{{this.imdbID}}" class="btn btn-sm btn-danger remove-movie">&times;</button>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
 </div>
 
-{{!-- 
-<li data-id="{{this.imdbID}}" class="list-group-item">
-  <span class="text-primary">{{this.Title}}</span>
-  {{#if this.Users.0.UserMovie.wannaWatch}}
-  <span>Wanna Watch</span>
-  {{else}}
-  <button class="btn btn-success wannawatch">Wanna Watch</button>
-  {{/if}} {{#if this.Users.0.UserMovie.isSeenAlready}}
-  <span>Seen Already</span>
-  {{else}}
-  <button class="btn btn-info seenalready">Seen Already</button>
-  {{/if}}
-  <button class="btn btn-primary float-right">
-    <a onClick="modalDisplay({{@index}})" href="#" class="overlay link details" id="trigger-modal{{@index}}">Details</a>
-  </button>
-  <button class="btn btn-danger float-right delete">ｘ</button>
-</li> --}}
+{{!-- <div id="myModal{{@index}}" class="modal modaltest"> --}}
 
-<div id="myModal{{@index}}" class="modal modaltest">
-
+  <div class="modal fade" id="myModal{{@index}}" tabindex="-1" role="dialog" aria-labelledby="myModal{{@index}}" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
   <!-- Modal content -->
   <div class="modal-content">
 
-    <div class="row" id="modal-body">
-      <!--poster -->
-      <div class="col-5" id="search-movie">
-        <img id="selected-movie-poster" src={{this.Poster}}>
-      </div>
+    <div class="modal-header">
+      <h3 class="modal-title" id="exampleModalLabel">{{this.Title}}</h3>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
 
-      <div class="col-7" id="movie-scroll">
+    <div class="row modal-body" id="modal-body">
+      <!--poster -->
+      <div class="col-sm-12 col-md-5" id="search-movie">
+        <div class="modal-movie-poster text-center">
+          <img id="selected-movie-poster" src={{this.Poster}}>
+        </div>
+      </div>
+      <hr>
+
+      <div class="col-sm-12 col-md-7" id="movie-scroll">
         <!--close BTN -->
-        <span id='closeit{{@index}}' class="close">&times;CLOSE</span>
+        {{!-- <span id='closeit{{@index}}' class="close">&times;CLOSE</span> --}}
+      
 
         <div class="container" id="modal-movie-info-box">
           <!--Movie Title -->
-          <h2 class="movie-title" id="modal-movie-title">{{this.Title}}</h2>
+          {{!-- <h2 class="movie-title" id="modal-movie-title">{{this.Title}}</h2> --}}
           <!--Year, Runtime & Genre -->
           <div class="row" id="YRG-box">
-            <div class="col-2" id="year">
-              <h5>{{this.Year}}</h5>
+            <div class="col-sm-12 col-md-2" id="year">
+              <h6>{{this.Year}}</h6>
             </div>
-            <div class="col-2" id="runtime">
-              <h5>{{this.Runtime}}</h5>
+            <div class="col-sm-12 col-md-4" id="runtime">
+              <h6>{{this.Runtime}}</h6>
             </div>
-            <div class="col-6" id="genre">
-              <h5>{{this.Genre}}</h5>
+            <div class="col-sm-12 col-md-6" id="genre">
+              <h6>{{this.Genre}}</h6>
             </div>
           </div>
+          <br>
           <!--Raitings -->
           <div class="row" id="raitings">
             <div class="col-3" id="raiting-imdb">
@@ -109,45 +117,41 @@
           </div>
           <!--Director-->
           <div class="row">
-            <div class="col-10" id="director">
-              <p>
-                <strong>Directed by: </strong>{{this.Writer}}</p>
+            <div class="col-12" id="director">
+              <hr>
+              <p><strong>Directed by: </strong>{{this.Writer}}</p>
             </div>
           </div>
           <!--Cast -->
           <div class="row">
-            <div class="col-10" id="cast">
-              <p>
-                <strong>Starring: </strong>{{this.Actors}}</p>
+            <div class="col-12" id="cast">
+              <hr>
+              <p><strong>Starring: </strong>{{this.Actors}}</p>
             </div>
           </div>
           <!--Plot -->
           <div class="row">
-            <div class="col-10" id="plot">
-              <p>
-                <strong>Plot: </strong>{{this.Plot}}</p>
+            <div class="col-12" id="plot">
+              <hr>
+              <p><strong>Plot: </strong>{{this.Plot}}</p>
             </div>
           </div>
-
-
-
           <!-- trailer -->
 
-          {{!--
+          <!-- 
           <iframe id="trailer-box" src="https://www.youtube.com/embed/{{this.movie_trailer}}" frameborder="0" allow="autoplay; encrypted-media"
-            allowfullscreen></iframe> --}}
-
-
+            allowfullscreen></iframe>  -->
         </div>
-
       </div>
-
     </div>
+  </div>
+  
   </div>
 
 </div>
 
 {{/each}}
+
 
 <script>
   function modalDisplay(num) {
