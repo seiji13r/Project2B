@@ -4,7 +4,7 @@ var $movieSearchContainer = $("#movie-search-container");
 
 // // The API object contains methods for each kind of request we'll make
 var API = {
-  movieSearch: function(movie){
+  movieSearch: function(movie) {
     return $.ajax({
       headers: {
         "Content-Type": "application/json"
@@ -14,26 +14,46 @@ var API = {
       data: JSON.stringify(movie)
     });
   },
-  movieSeen: function(movieuser){
+  movieAdd: function(movie) {
     return $.ajax({
       headers: {
         "Content-Type": "application/json"
       },
       type: "POST",
+      url: "api/movieadd",
+      data: JSON.stringify(movie)
+    });
+  },
+  movieSeen: function(movie) {
+    return $.ajax({
+      headers: {
+        "Content-Type": "application/json"
+      },
+      type: "PUT",
       url: "api/movieseen",
-      data: JSON.stringify(movieuser)
+      data: JSON.stringify(movie)
     });
   },
-  movieToWatch: function(movieuser){
+  movieToWatch: function(movie) {
     return $.ajax({
       headers: {
         "Content-Type": "application/json"
       },
-      type: "POST",
+      type: "PUT",
       url: "api/movietowatch",
-      data: JSON.stringify(movieuser)
+      data: JSON.stringify(movie)
     });
   },
+  movieRemove: function(movie) {
+    return $.ajax({
+      headers: {
+        "Content-Type": "application/json"
+      },
+      type: "DELETE",
+      url: "api/movieremove",
+      data: JSON.stringify(movie)
+    });
+  }
 };
 
 //  Function to handle the submit
@@ -52,30 +72,37 @@ var handleMovieSearchSubmit = function() {
   API.movieSearch(movie).then(function(response) {
     // console.log(response);
     if (response.Search) {
-      response.Search.forEach(function(movie, index, arr) {
+      response.Search.forEach(function(movie) {
         // console.log(movie);
         var imgMovieDiv = $("<div>");
-        imgMovieDiv.addClass("img-movie-div");
+        imgMovieDiv.addClass(
+          "col-sm-12 col-md-3 movie-poster-div movie-div-" + movie.imdbID
+        );
+
         var movieIMG = $("<img>");
         movieIMG.addClass("img-movie-poster");
         movieIMG.attr("src", movie.Poster);
         movieIMG.attr("alt", movie.Title);
 
-        var addAlreadySeenBtn = $("<button>");
-        addAlreadySeenBtn.text("Seen Already");
-        addAlreadySeenBtn.addClass("btn btn-primary add-already-seen");
-        addAlreadySeenBtn.attr("data-imdbid", movie.imdbID);
+        var addMovieBtn = $("<button>");
+        addMovieBtn.text("Add Movie");
+        addMovieBtn.addClass("btn btn-warning add-movie");
+        addMovieBtn.attr("data-imdbid", movie.imdbID);
 
-        var addWannaWatchBtn = $("<button>");
-        addWannaWatchBtn.text("WannaWatch");
-        addWannaWatchBtn.addClass("btn btn-secondary add-wanna-watch");
-        addWannaWatchBtn.attr("data-imdbid", movie.imdbID);
+        var movieTitle = $("<h6>");
+        movieTitle.text(movie.Title);
 
+        addMovieBtn.appendTo(imgMovieDiv);
         movieIMG.appendTo(imgMovieDiv);
-        addAlreadySeenBtn.appendTo(imgMovieDiv);
-        addWannaWatchBtn.appendTo(imgMovieDiv);
+        movieTitle.appendTo(imgMovieDiv);
 
         imgMovieDiv.appendTo($movieSearchContainer);
+
+      //   <div class="col-sm-12 col-md-3 movie-poster-div">
+      //   <button class="btn btn-warning">Add Movie</button>
+      //   <h6 class="movie-title">Star Wars</h6>
+      //   <img src="https://m.media-amazon.com/images/M/MV5BNzVlY2MwMjktM2E4OS00Y2Y3LWE3ZjctYzhkZGM3YzA1ZWM2XkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_SX300.jpg" alt="">
+      // </div>
       });
     }
   });
@@ -84,16 +111,44 @@ var handleMovieSearchSubmit = function() {
   $movieSearchContainer.empty();
 };
 
+// Handle Button Add Movie
+var handleMovieAdd = function() {
+  // Prevent From Post Behavior
+  event.preventDefault();
+  // Capture the imdbID contained in the button.
+  var imdbID = $(this).data("imdbid");
+  var movie = {
+    imdbID: imdbID
+  };
+
+  API.movieAdd(movie).then(function(response) {
+    // console.log(response);
+    // Remove the Movie From the List
+    $(".movie-div-" + imdbID).remove();
+  });
+};
+
 // Handle Button of Movie Already Seen
-var handleMovieSeen = function(){
-  // console.log("MovieSeenClicked");
-  // console.log($(this));
-  // console.log($(this).data("imdbid"));
+var handleMovieSeen = function() {
+  console.log("Movie Seen Button Clicked");
   event.preventDefault();
 
+  var imdbID = $(this).data("imdbid");
+  var spanTag = $("#" + imdbID + "_seen");
+  var spanData = $("#" + imdbID + "_seen").text();
+  var seenAlready;
+
+  if (spanData === "No") {
+    spanTag.text("Yes");
+    seenAlready = 1;
+  } else {
+    spanTag.text("No");
+    seenAlready = 0;
+  }
+
   var movieuser = {
-    imdbID: $(this).data("imdbid"),
-    user: "toDefine"
+    imdbID: imdbID,
+    seen: seenAlready
   };
 
   API.movieSeen(movieuser).then(function(response) {
@@ -102,38 +157,60 @@ var handleMovieSeen = function(){
 };
 
 // Handle Button of Movie To Watch
-var handleMovieToWatch = function(){
-  // console.log("MovieToWatch");
-  // console.log($(this));
-  // console.log($(this).data("imdbid"));
+var handleMovieToWatch = function() {
+  // console.log("Movie Wanna Watch Button Clicked");
   event.preventDefault();
 
-  // var imdbID= $(this).data("imdbid");
-  // // console.log(imdbID);
-  // // console.log($("#"+imdbID+"_wannawatch").text());
-  // var spanTag = $("#"+imdbID+"_wannawatch");
-  // var spanData = $("#"+imdbID+"_wannawatch").text();
-  // var wannaWatch;
+  var imdbID = $(this).data("imdbid");
+  // console.log(imdbID);
+  // console.log($("#"+imdbID+"_wannawatch").text());
+  var spanTag = $("#" + imdbID + "_wannawatch");
+  var spanData = $("#" + imdbID + "_wannawatch").text();
+  var wannaWatch;
 
-  // if (spanData === "No"){
-  //   spanTag.text("Yes");
-  //   wannaWatch = true;
-  // } else {
-  //   spanTag.text("No");
-  //   wannaWatch = false;
-  // }
+  if (spanData === "No") {
+    spanTag.text("Yes");
+    wannaWatch = 1;
+  } else {
+    spanTag.text("No");
+    wannaWatch = 0;
+  }
 
-  var movieuser = {
-    imdbID: $(this).data("imdbid"),
-    user: "toDefine"
+  var movie = {
+    imdbID: imdbID,
+    towatch: wannaWatch
   };
 
-  API.movieToWatch(movieuser).then(function(response) {
+  API.movieToWatch(movie).then(function(response) {
     console.log(response);
   });
 };
 
+var handleMovieRemove = function() {
+  console.log("Movie Remove Button Clicked");
+  event.preventDefault();
+  var imdbID = $(this).data("imdbid");
+
+  var movie = {
+    imdbID: imdbID
+  };
+
+  API.movieRemove(movie).then(function(response) {
+    console.log(response);
+    // Remove the Movie From the List
+    $(".movie-div-" + imdbID).remove();
+  });
+
+}
+
 // // Add event listeners to the submit and delete buttons
 $(document).on("click", ".btn-search", handleMovieSearchSubmit);
+$(document).on("click", ".add-movie", handleMovieAdd);
+$(document).on("click", ".remove-movie", handleMovieRemove);
 $(document).on("click", ".add-already-seen", handleMovieSeen);
 $(document).on("click", ".add-wanna-watch", handleMovieToWatch);
+$(document).ready(function(){
+  $(".navbar-brand, .navbar-nav>li>a").on("click", function() {
+    $(".navbar-collapse").collapse("hide");
+  });
+});

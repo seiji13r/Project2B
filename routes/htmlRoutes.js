@@ -50,11 +50,12 @@ module.exports = function(app) {
   // Test Query All
   app.get("/moviematches", function(req, res) {
     db.Movie.findAll({
-      attributes: ["Title"],
+      attributes: ["Title", "Year"],
       include: [
         {
           model: db.User,
-          attributes: ["username", "email"],
+          required: true,
+          attributes: ["name", "username", "email"],
           through: {
             attributes: ["isSeenAlready", "wannaWatch"],
             where: { wannaWatch: true }
@@ -62,11 +63,14 @@ module.exports = function(app) {
         }
       ]
     }).then(function(dbMovies) {
-      // res.render("index", {
-      //   msg: "Welcome!",
-      //   movies: dbMovies
-      // });
-      res.json(dbMovies);
+      dbMovies2 = dbMovies.filter(function(elem){
+        return elem.Users.length > 1;
+      });
+      res.render("moviematch", {
+        msg: "Movie Matches!",
+        movies: dbMovies2
+      });
+      // res.json(dbMovies2);
     });
   });
 

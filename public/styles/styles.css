@@ -6,8 +6,71 @@ main {
   line-height: 2.5;
 }
 
-.result-table{
+.movie-result{
   color: white;
   background-color: black;
   opacity: 0.75;
+  border-radius: 15px;
+  /* padding: 5px; */
+}
+
+.movie-poster-div {
+  position: relative;
+  width: 50%;
+  padding: 10px;
+  border: 2px solid white;
+}
+
+/* Make the image responsive */
+.movie-poster-div img {
+  width: 100%;
+  height: auto;
+}
+
+/* Style the button and place it in the middle of the container/image */
+.movie-poster-div .btn {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  /* background-color: #555; */
+  /* color: white; */
+  font-size: 16px;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+/* Style the button and place it in the middle of the container/image */
+.movie-poster-div h6 {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  background-color: darkblue;
+  color: white;
+  font-size: 16px;
+  text-align: center;
+  padding: 12px 24px;
+  border: none;
+  /* cursor: pointer; */
+  border-radius: 5px;
+  width: 90%;
+}
+
+.movie-poster-div .btn:hover {
+  background-color: black;
+  color: white;
+}
+
+.mini-poster {
+  height: 150px;
+}
+
+.mini-poster img {
+  width: auto;
+  height: 100%;
 }
