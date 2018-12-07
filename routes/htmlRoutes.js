@@ -55,7 +55,7 @@ module.exports = function(app) {
         {
           model: db.User,
           required: true,
-          attributes: ["username", "email"],
+          attributes: ["name", "username", "email"],
           through: {
             attributes: ["isSeenAlready", "wannaWatch"],
             where: { wannaWatch: true }
@@ -63,11 +63,14 @@ module.exports = function(app) {
         }
       ]
     }).then(function(dbMovies) {
+      dbMovies2 = dbMovies.filter(function(elem){
+        return elem.Users.length > 1;
+      });
       res.render("moviematch", {
         msg: "Movie Matches!",
-        movies: dbMovies
+        movies: dbMovies2
       });
-      // res.json(dbMovies);
+      // res.json(dbMovies2);
     });
   });
 
